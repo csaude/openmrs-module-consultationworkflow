@@ -9,13 +9,13 @@
  */
 package org.openmrs.module.consultationworkflow.api.impl;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.openmrs.api.APIException;
 import org.openmrs.api.UserService;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.consultationworkflow.Item;
+import org.openmrs.module.consultationworkflow.Workflow;
 import org.openmrs.module.consultationworkflow.api.ConsultationWorkflowService;
 import org.openmrs.module.consultationworkflow.api.dao.ConsultationWorkflowDao;
 
@@ -40,8 +40,8 @@ public class ConsultationWorkflowServiceImpl extends BaseOpenmrsService implemen
 	}
 	
 	@Override
-	public List<Object> getWorkflows() {
-		return Collections.emptyList();
+	public List<Workflow> getWorkflows() {
+		return List.of(new Workflow("3d121605-3f5b-49b9-9053-d06d89e92bdc", "Dummy workflow", "1.0", false, true));
 	}
 	
 	@Override
