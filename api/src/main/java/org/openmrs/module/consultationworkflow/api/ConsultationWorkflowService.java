@@ -9,6 +9,8 @@
  */
 package org.openmrs.module.consultationworkflow.api;
 
+import java.util.List;
+
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
 import org.openmrs.api.OpenmrsService;
@@ -21,6 +23,14 @@ import org.springframework.transaction.annotation.Transactional;
  * moduleApplicationContext.xml on how it is wired up.
  */
 public interface ConsultationWorkflowService extends OpenmrsService {
+	
+	/**
+	 * Returns a list of workflows. It can be called by any authenticated user.
+	 * 
+	 * @return
+	 */
+	@Authorized()
+	List<Object> getWorkflows();
 	
 	/**
 	 * Returns an item by uuid. It can be called by any authenticated user. It is fetched in read

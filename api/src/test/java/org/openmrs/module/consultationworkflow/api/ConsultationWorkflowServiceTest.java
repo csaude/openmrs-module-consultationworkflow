@@ -9,7 +9,14 @@
  */
 package org.openmrs.module.consultationworkflow.api;
 
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.when;
+
+import org.hibernate.cfg.NotYetImplementedException;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -19,9 +26,6 @@ import org.openmrs.api.UserService;
 import org.openmrs.module.consultationworkflow.Item;
 import org.openmrs.module.consultationworkflow.api.dao.ConsultationWorkflowDao;
 import org.openmrs.module.consultationworkflow.api.impl.ConsultationWorkflowServiceImpl;
-import static org.mockito.Mockito.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 
 /**
  * This is a unit test, which verifies logic in ConsultationWorkflowService. It doesn't extend
@@ -45,7 +49,7 @@ public class ConsultationWorkflowServiceTest {
 	
 	@Test
 	public void saveItem_shouldSetOwnerIfNotSet() {
-		//Given
+		// Given
 		Item item = new Item();
 		item.setDescription("some description");
 		
@@ -54,10 +58,16 @@ public class ConsultationWorkflowServiceTest {
 		User user = new User();
 		when(userService.getUser(1)).thenReturn(user);
 		
-		//When
+		// When
 		basicModuleService.saveItem(item);
 		
-		//Then
+		// Then
 		assertThat(item, hasProperty("owner", is(user)));
+	}
+	
+	@Test
+	@Ignore
+	public void getWorkflowsShouldReturnWorkflows() {
+		throw new NotYetImplementedException();
 	}
 }

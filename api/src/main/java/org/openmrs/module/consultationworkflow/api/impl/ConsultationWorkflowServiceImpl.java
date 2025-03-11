@@ -9,6 +9,9 @@
  */
 package org.openmrs.module.consultationworkflow.api.impl;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.openmrs.api.APIException;
 import org.openmrs.api.UserService;
 import org.openmrs.api.impl.BaseOpenmrsService;
@@ -34,6 +37,11 @@ public class ConsultationWorkflowServiceImpl extends BaseOpenmrsService implemen
 	 */
 	public void setUserService(UserService userService) {
 		this.userService = userService;
+	}
+	
+	@Override
+	public List<Object> getWorkflows() {
+		return Collections.emptyList();
 	}
 	
 	@Override
