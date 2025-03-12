@@ -15,9 +15,9 @@ import org.openmrs.api.APIException;
 import org.openmrs.api.UserService;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.consultationworkflow.Item;
-import org.openmrs.module.consultationworkflow.Workflow;
 import org.openmrs.module.consultationworkflow.api.ConsultationWorkflowService;
 import org.openmrs.module.consultationworkflow.api.dao.ConsultationWorkflowDao;
+import org.openmrs.module.consultationworkflow.model.ConsultationWorkflowConfig;
 
 public class ConsultationWorkflowServiceImpl extends BaseOpenmrsService implements ConsultationWorkflowService {
 	
@@ -40,8 +40,14 @@ public class ConsultationWorkflowServiceImpl extends BaseOpenmrsService implemen
 	}
 	
 	@Override
-	public List<Workflow> getWorkflows() {
-		return List.of(new Workflow("3d121605-3f5b-49b9-9053-d06d89e92bdc", "Dummy workflow", "1.0", false, true));
+	public List<ConsultationWorkflowConfig> getWorkflows() {
+		ConsultationWorkflowConfig workflow = new ConsultationWorkflowConfig();
+		workflow.setUuid("3d121605-3f5b-49b9-9053-d06d89e92bdc");
+		workflow.setName("Dummy workflow");
+		workflow.setVersion("1.0");
+		workflow.setVoided(false);
+		workflow.setPublished(true);
+		return List.of(workflow);
 	}
 	
 	@Override
