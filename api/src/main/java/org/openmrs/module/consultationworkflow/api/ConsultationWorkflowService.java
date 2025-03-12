@@ -14,9 +14,9 @@ import java.util.List;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
 import org.openmrs.api.OpenmrsService;
-import org.openmrs.module.consultationworkflow.ConsultationWorkflowConfig;
 import org.openmrs.module.consultationworkflow.Item;
 import org.openmrs.module.consultationworkflow.Workflow;
+import org.openmrs.module.consultationworkflow.model.ConsultationWorkflowConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -31,7 +31,7 @@ public interface ConsultationWorkflowService extends OpenmrsService {
 	 * @return
 	 */
 	@Authorized()
-	List<Workflow> getWorkflows();
+	List<ConsultationWorkflowConfig> getWorkflows();
 	
 	/**
 	 * Returns an item by uuid. It can be called by any authenticated user. It is fetched in read
@@ -53,7 +53,6 @@ public interface ConsultationWorkflowService extends OpenmrsService {
 	 * @return
 	 * @throws APIException
 	 */
-	@Authorized(ConsultationWorkflowConfig.MODULE_PRIVILEGE)
 	@Transactional
 	Item saveItem(Item item) throws APIException;
 }
