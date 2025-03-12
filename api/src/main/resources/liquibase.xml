@@ -1,39 +1,175 @@
 <?xml version="1.0" encoding="UTF-8"?>
- 
+
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
-                  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
- 
-    <!--
-    	See http://wiki.openmrs.org/display/docs/Module+liquibase+File for 
-    	documentation on this file.
-    
-        See http://www.liquibase.org/manual/home#available_database_refactorings
-        for a list of supported elements and attributes
-    -->
- 
- 	<!-- Uncomment the changeset below if you want to make the Item class persistable, see also Item and ConsultationWorkflowDaoTest -->
- 	<!--
-	<changeSet id="consultationworkflow-2016-08-02-12-21" author="raff">
-		<preConditions onFail="MARK_RAN">
-			<not><tableExists tableName="consultationworkflow_item"/></not>
-		</preConditions>
-		<comment>
-			Creating the consultationworkflow_item table
-		</comment>
-		<createTable tableName="consultationworkflow_item">
-			<column name="consultationworkflow_item_id" type="int" autoIncrement="true">
-				<constraints primaryKey="true" nullable="false"/>
-			</column>
-			<column name="uuid" type="char(38)">
-				<constraints nullable="false" unique="true"></constraints>
-			</column>
-			<column name="owner" type="int" />
-			<column name="description" type="varchar(255)" />
-		</createTable>
-        <addForeignKeyConstraint constraintName="consultationworkflow_item_owner_fk" baseTableName="consultationworkflow_item" baseColumnNames="owner"  referencedTableName="users"
-                                 referencedColumnNames="user_id" />
-    </changeSet> -->
- 
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+                  https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+
+    <changeSet id="20231204-create-consultation-workflow-config-table" author="eudson">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="consultation_workflow_config"/>
+            </not>
+        </preConditions>
+        <createTable tableName="consultation_workflow_config">
+            <column name="workflow_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+            <column name="description" type="varchar(1000)"/>
+            <column name="published" type="boolean" defaultValueBoolean="false"/>
+            <column name="version" type="varchar(255)"/>
+            <column name="creator" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_created" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_by" type="int"/>
+            <column name="date_changed" type="datetime"/>
+            <column name="voided" type="boolean" defaultValueBoolean="false"/>
+            <column name="voided_by" type="int"/>
+            <column name="date_voided" type="datetime"/>
+            <column name="void_reason" type="varchar(255)"/>
+            <column name="uuid" type="char(38)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="workflow_config_creator_fk"
+                                 baseTableName="consultation_workflow_config" baseColumnNames="creator"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="workflow_config_changed_by_fk"
+                                 baseTableName="consultation_workflow_config" baseColumnNames="changed_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="workflow_config_voided_by_fk"
+                                 baseTableName="consultation_workflow_config" baseColumnNames="voided_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
+    </changeSet>
+
+    <changeSet id="20231204-create-consultation-workflow-table" author="eudson">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="consultation_workflow"/>
+            </not>
+        </preConditions>
+        <createTable tableName="consultation_workflow">
+            <column name="consultation_workflow_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="config_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="patient_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="visit_id" type="int"/>
+            <column name="creator" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_created" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_by" type="int"/>
+            <column name="date_changed" type="datetime"/>
+            <column name="voided" type="boolean" defaultValueBoolean="false"/>
+            <column name="voided_by" type="int"/>
+            <column name="date_voided" type="datetime"/>
+            <column name="void_reason" type="varchar(255)"/>
+            <column name="uuid" type="char(38)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="workflow_config_id_fk"
+                                 baseTableName="consultation_workflow" baseColumnNames="config_id"
+                                 referencedTableName="consultation_workflow_config"
+                                 referencedColumnNames="workflow_id"/>
+        <addForeignKeyConstraint constraintName="workflow_patient_id_fk"
+                                 baseTableName="consultation_workflow" baseColumnNames="patient_id"
+                                 referencedTableName="patient" referencedColumnNames="patient_id"/>
+        <addForeignKeyConstraint constraintName="workflow_visit_id_fk"
+                                 baseTableName="consultation_workflow" baseColumnNames="visit_id"
+                                 referencedTableName="visit" referencedColumnNames="visit_id"/>
+    </changeSet>
+
+    <changeSet id="20231204-create-consultation-workflow-step-table" author="eudson">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="consultation_workflow_step"/>
+            </not>
+        </preConditions>
+        <createTable tableName="consultation_workflow_step">
+            <column name="consultation_workflow_step_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="consultation_workflow_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="step_id" type="varchar(255)"/>
+            <column name="step_name" type="varchar(255)"/>
+            <column name="render_type" type="varchar(255)"/>
+            <column name="data_reference" type="varchar(255)"/>
+            <column name="completed" type="boolean" defaultValueBoolean="false"/>
+            <column name="creator" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_created" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_by" type="int"/>
+            <column name="date_changed" type="datetime"/>
+            <column name="voided" type="boolean" defaultValueBoolean="false"/>
+            <column name="voided_by" type="int"/>
+            <column name="date_voided" type="datetime"/>
+            <column name="void_reason" type="varchar(255)"/>
+            <column name="uuid" type="char(38)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="workflow_step_workflow_id_fk"
+                                 baseTableName="consultation_workflow_step" baseColumnNames="consultation_workflow_id"
+                                 referencedTableName="consultation_workflow"
+                                 referencedColumnNames="consultation_workflow_id"/>
+    </changeSet>
+
+    <changeSet id="20231204-create-workflow-eligibility-criteria-table" author="eudson">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="workflow_eligibility_criteria"/>
+            </not>
+        </preConditions>
+        <createTable tableName="workflow_eligibility_criteria">
+            <column name="eligibility_criteria_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="criteria_type" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="condition" type="varchar(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="workflow_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creator" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_created" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_by" type="int"/>
+            <column name="date_changed" type="datetime"/>
+            <column name="voided" type="boolean" defaultValueBoolean="false"/>
+            <column name="voided_by" type="int"/>
+            <column name="date_voided" type="datetime"/>
+            <column name="void_reason" type="varchar(255)"/>
+            <column name="uuid" type="char(38)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="eligibility_workflow_id_fk"
+                                 baseTableName="workflow_eligibility_criteria" baseColumnNames="workflow_id"
+                                 referencedTableName="consultation_workflow_config"
+                                 referencedColumnNames="workflow_id"/>
+    </changeSet>
+
 </databaseChangeLog>
