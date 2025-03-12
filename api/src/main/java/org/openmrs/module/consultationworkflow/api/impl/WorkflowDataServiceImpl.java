@@ -9,11 +9,13 @@
  */
 package org.openmrs.module.consultationworkflow.api.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openmrs.api.APIException;
 import org.openmrs.api.UserService;
 import org.openmrs.api.impl.BaseOpenmrsService;
+<<<<<<< Updated upstream:api/src/main/java/org/openmrs/module/consultationworkflow/api/impl/ConsultationWorkflowServiceImpl.java
 import org.openmrs.module.consultationworkflow.Item;
 import org.openmrs.module.consultationworkflow.api.ConsultationWorkflowService;
 import org.openmrs.module.consultationworkflow.api.dao.ConsultationWorkflowDao;
@@ -23,15 +25,22 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class ConsultationWorkflowServiceImpl extends BaseOpenmrsService implements ConsultationWorkflowService {
+=======
+import org.openmrs.module.consultationworkflow.api.WorkflowDataService;
+import org.openmrs.module.consultationworkflow.api.dao.impl.WorkflowDataDaoImpl;
+import org.openmrs.module.consultationworkflow.model.WorkflowData;
+
+public class WorkflowDataServiceImpl extends BaseOpenmrsService implements WorkflowDataService {
+>>>>>>> Stashed changes:api/src/main/java/org/openmrs/module/consultationworkflow/api/impl/WorkflowDataServiceImpl.java
 	
-	ConsultationWorkflowDao dao;
+	WorkflowDataDaoImpl dao;
 	
 	UserService userService;
 	
 	/**
 	 * Injected in moduleApplicationContext.xml
 	 */
-	public void setDao(ConsultationWorkflowDao dao) {
+	public void setDao(WorkflowDataDaoImpl dao) {
 		this.dao = dao;
 	}
 	
@@ -43,6 +52,7 @@ public class ConsultationWorkflowServiceImpl extends BaseOpenmrsService implemen
 	}
 	
 	@Override
+<<<<<<< Updated upstream:api/src/main/java/org/openmrs/module/consultationworkflow/api/impl/ConsultationWorkflowServiceImpl.java
 	public List<ConsultationWorkflowConfig> getWorkflows() {
 		ConsultationWorkflowConfig workflow = new ConsultationWorkflowConfig();
 		workflow.setUuid("3d121605-3f5b-49b9-9053-d06d89e92bdc");
@@ -57,19 +67,20 @@ public class ConsultationWorkflowServiceImpl extends BaseOpenmrsService implemen
 	public ConsultationWorkflowConfig saveWorkflow(ConsultationWorkflowConfig workflow) {
 		log.info("Saving workflow: " + workflow);
 		return workflow;
+=======
+	public List<WorkflowData> getWorkflows() {
+		return new ArrayList<>();
+>>>>>>> Stashed changes:api/src/main/java/org/openmrs/module/consultationworkflow/api/impl/WorkflowDataServiceImpl.java
 	}
-	
+
 	@Override
-	public Item getItemByUuid(String uuid) throws APIException {
-		return dao.getItemByUuid(uuid);
+	public WorkflowData getWorkflowByUuid(String uuid) throws APIException {
+		return null;
 	}
-	
+
 	@Override
-	public Item saveItem(Item item) throws APIException {
-		if (item.getOwner() == null) {
-			item.setOwner(userService.getUser(1));
-		}
-		
-		return dao.saveItem(item);
+	public WorkflowData saveWorkflow(WorkflowData workflow) throws APIException {
+		return null;
 	}
+
 }

@@ -23,21 +23,21 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.openmrs.User;
 import org.openmrs.api.UserService;
-import org.openmrs.module.consultationworkflow.Item;
-import org.openmrs.module.consultationworkflow.api.dao.ConsultationWorkflowDao;
-import org.openmrs.module.consultationworkflow.api.impl.ConsultationWorkflowServiceImpl;
+import org.openmrs.module.consultationworkflow.api.dao.impl.WorkflowDataDaoImpl;
+import org.openmrs.module.consultationworkflow.api.impl.WorkflowDataServiceImpl;
+import org.openmrs.module.consultationworkflow.model.WorkflowData;
 
 /**
  * This is a unit test, which verifies logic in ConsultationWorkflowService. It doesn't extend
  * BaseModuleContextSensitiveTest, thus it is run without the in-memory DB and Spring context.
  */
-public class ConsultationWorkflowServiceTest {
+public class WorkflowDataServiceTest {
 	
 	@InjectMocks
-	ConsultationWorkflowServiceImpl basicModuleService;
+	WorkflowDataServiceImpl basicModuleService;
 	
 	@Mock
-	ConsultationWorkflowDao dao;
+	WorkflowDataDaoImpl dao;
 	
 	@Mock
 	UserService userService;
@@ -50,16 +50,16 @@ public class ConsultationWorkflowServiceTest {
 	@Test
 	public void saveItem_shouldSetOwnerIfNotSet() {
 		// Given
-		Item item = new Item();
-		item.setDescription("some description");
+		WorkflowData item = new WorkflowData();
+		item.setId(1000);
 		
-		when(dao.saveItem(item)).thenReturn(item);
+		when(dao.createOrUpdate(item)).thenReturn(item);
 		
 		User user = new User();
 		when(userService.getUser(1)).thenReturn(user);
 		
 		// When
-		basicModuleService.saveItem(item);
+		basicModuleService.saveWorkflow(item);
 		
 		// Then
 		assertThat(item, hasProperty("owner", is(user)));

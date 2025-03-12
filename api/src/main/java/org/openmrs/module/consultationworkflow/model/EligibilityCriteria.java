@@ -1,6 +1,5 @@
 package org.openmrs.module.consultationworkflow.model;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,7 +12,7 @@ import javax.persistence.*;
 @Setter
 @Getter
 @Entity
-@Table(name = "workflow_eligibility_criteria")
+@Table(name = "consultationworkflow_eligibility_criteria")
 public class EligibilityCriteria extends BaseChangeableOpenmrsData {
 
     @Id
@@ -28,8 +27,8 @@ public class EligibilityCriteria extends BaseChangeableOpenmrsData {
     private String condition;
 
     @ManyToOne
-    @JoinColumn(name = "workflow_id", nullable = false)
-    private ConsultationWorkflowConfig workflow;
+    @JoinColumn(name = "workflow_config_id", nullable = false)
+    private WorkflowConfig workflowConfig;
 
     @Override
     public Integer getId() {
@@ -41,16 +40,4 @@ public class EligibilityCriteria extends BaseChangeableOpenmrsData {
         setEligibilityCriteriaId(id);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        EligibilityCriteria that = (EligibilityCriteria) o;
-        return eligibilityCriteriaId.equals(that.eligibilityCriteriaId);
-    }
-
-    @Override
-    public int hashCode() {
-        return eligibilityCriteriaId.hashCode();
-    }
 }

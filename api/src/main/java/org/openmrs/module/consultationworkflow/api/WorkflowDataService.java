@@ -14,15 +14,20 @@ import java.util.List;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
 import org.openmrs.api.OpenmrsService;
+<<<<<<< Updated upstream:api/src/main/java/org/openmrs/module/consultationworkflow/api/ConsultationWorkflowService.java
 import org.openmrs.module.consultationworkflow.Item;
 import org.openmrs.module.consultationworkflow.model.ConsultationWorkflowConfig;
+=======
+import org.openmrs.module.consultationworkflow.ConsultationWorkflowConfig;
+import org.openmrs.module.consultationworkflow.model.WorkflowData;
+>>>>>>> Stashed changes:api/src/main/java/org/openmrs/module/consultationworkflow/api/WorkflowDataService.java
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * The main service of this module, which is exposed for other modules. See
  * moduleApplicationContext.xml on how it is wired up.
  */
-public interface ConsultationWorkflowService extends OpenmrsService {
+public interface WorkflowDataService extends OpenmrsService {
 	
 	/**
 	 * Returns a list of workflows. It can be called by any authenticated user.
@@ -30,6 +35,7 @@ public interface ConsultationWorkflowService extends OpenmrsService {
 	 * @return
 	 */
 	@Authorized()
+<<<<<<< Updated upstream:api/src/main/java/org/openmrs/module/consultationworkflow/api/ConsultationWorkflowService.java
 	List<ConsultationWorkflowConfig> getWorkflows();
 	
 	/*
@@ -37,27 +43,30 @@ public interface ConsultationWorkflowService extends OpenmrsService {
 	 */
 	@Authorized()
 	ConsultationWorkflowConfig saveWorkflow(ConsultationWorkflowConfig workflow);
+=======
+	List<WorkflowData> getWorkflows();
+>>>>>>> Stashed changes:api/src/main/java/org/openmrs/module/consultationworkflow/api/WorkflowDataService.java
 	
 	/**
-	 * Returns an item by uuid. It can be called by any authenticated user. It is fetched in read
+	 * Returns a workflow by its uuid. It can be called by any authenticated user. It is fetched in read
 	 * only transaction.
 	 * 
-	 * @param uuid
-	 * @return
+	 * @param uuid the uuid of the workflow
+	 * @return a ConsultationWorkflow object
 	 * @throws APIException
 	 */
 	@Authorized()
 	@Transactional(readOnly = true)
-	Item getItemByUuid(String uuid) throws APIException;
+	WorkflowData getWorkflowByUuid(String uuid) throws APIException;
 	
 	/**
-	 * Saves an item. Sets the owner to superuser, if it is not set. It can be called by users with
+	 * Saves a workflow. Sets the owner to superuser, if it is not set. It can be called by users with
 	 * this module's privilege. It is executed in a transaction.
 	 * 
-	 * @param item
+	 * @param workflow
 	 * @return
 	 * @throws APIException
 	 */
 	@Transactional
-	Item saveItem(Item item) throws APIException;
+	WorkflowData saveWorkflow(WorkflowData workflow) throws APIException;
 }
