@@ -17,6 +17,7 @@ import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
+import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
 @Resource(name = RestConstants.VERSION_1 + ConsultationWorkflowResourceController.CONSULTAION_WORKFLOW_NAMESPACE
@@ -34,7 +35,7 @@ public class WorkflowResource extends DelegatingCrudResource<ConsultationWorkflo
 	
 	@Override
 	public ConsultationWorkflowConfig save(ConsultationWorkflowConfig delegate) {
-		throw new UnsupportedOperationException("Unimplemented method 'save'");
+		return getConsultationWorkflowService().saveWorkflow(delegate);
 	}
 	
 	@Override
@@ -66,6 +67,16 @@ public class WorkflowResource extends DelegatingCrudResource<ConsultationWorkflo
 		} else {
 			return null;
 		}
+	}
+	
+	@Override
+	public DelegatingResourceDescription getCreatableProperties() throws ResourceDoesNotSupportOperationException {
+		DelegatingResourceDescription description = new DelegatingResourceDescription();
+		description.addProperty("name");
+		description.addProperty("description");
+		description.addProperty("published");
+		description.addProperty("version");
+		return description;
 	}
 	
 	@Override

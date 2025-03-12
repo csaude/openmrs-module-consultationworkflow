@@ -19,6 +19,9 @@ import org.openmrs.module.consultationworkflow.api.ConsultationWorkflowService;
 import org.openmrs.module.consultationworkflow.api.dao.ConsultationWorkflowDao;
 import org.openmrs.module.consultationworkflow.model.ConsultationWorkflowConfig;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ConsultationWorkflowServiceImpl extends BaseOpenmrsService implements ConsultationWorkflowService {
 	
 	ConsultationWorkflowDao dao;
@@ -48,6 +51,12 @@ public class ConsultationWorkflowServiceImpl extends BaseOpenmrsService implemen
 		workflow.setVoided(false);
 		workflow.setPublished(true);
 		return List.of(workflow);
+	}
+	
+	@Override
+	public ConsultationWorkflowConfig saveWorkflow(ConsultationWorkflowConfig workflow) {
+		log.info("Saving workflow: " + workflow);
+		return workflow;
 	}
 	
 	@Override

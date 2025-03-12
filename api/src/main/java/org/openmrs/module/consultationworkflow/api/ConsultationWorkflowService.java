@@ -15,7 +15,6 @@ import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
 import org.openmrs.api.OpenmrsService;
 import org.openmrs.module.consultationworkflow.Item;
-import org.openmrs.module.consultationworkflow.Workflow;
 import org.openmrs.module.consultationworkflow.model.ConsultationWorkflowConfig;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +31,12 @@ public interface ConsultationWorkflowService extends OpenmrsService {
 	 */
 	@Authorized()
 	List<ConsultationWorkflowConfig> getWorkflows();
+	
+	/*
+	 * Saves a workflow. It can be called by users with this module's privilege.
+	 */
+	@Authorized()
+	ConsultationWorkflowConfig saveWorkflow(ConsultationWorkflowConfig workflow);
 	
 	/**
 	 * Returns an item by uuid. It can be called by any authenticated user. It is fetched in read
