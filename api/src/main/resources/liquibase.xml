@@ -25,6 +25,9 @@
             <column name="version" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
+            <column name="resourceValueReference" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
             <column name="creator" type="int">
                 <constraints nullable="false"/>
             </column>
