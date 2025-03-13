@@ -39,13 +39,12 @@ public class WorkflowServiceImpl extends BaseOpenmrsService implements WorkflowS
 	
 	@Override
 	public WorkflowConfig saveWorkflow(WorkflowConfig workflow) {
-		log.info("Saving workflow: " + workflow);
-		return workflow;
+		return workflowConfigDao.createOrUpdate(workflow);
 	}
 	
 	@Override
 	public WorkflowConfig getWorkflowByUuid(String uuid) throws APIException {
-		throw new UnsupportedOperationException("Unimplemented method 'getWorkflowByUuid'");
+		return workflowConfigDao.get(uuid).get();
 	}
 	
 	@Override

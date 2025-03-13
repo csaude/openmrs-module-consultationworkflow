@@ -34,7 +34,7 @@ public class WorkflowConfig extends BaseChangeableOpenmrsData {
 	@Column(nullable = false)
 	private String version;
 	
-	@Column(nullable = false)
+	@Column
 	private String resourceValueReference;
 	
 	@Override

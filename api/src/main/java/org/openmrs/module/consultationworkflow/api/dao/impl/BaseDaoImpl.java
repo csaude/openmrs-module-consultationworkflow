@@ -54,7 +54,8 @@ public class BaseDaoImpl<T extends OpenmrsObject & Auditable> implements BaseDao
 	
 	@Override
 	public T createOrUpdate(T object) {
-		return null;
+		this.getCurrentSession().saveOrUpdate(object);
+		return object;
 	}
 	
 	@Override
