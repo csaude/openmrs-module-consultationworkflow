@@ -9,13 +9,12 @@
  */
 package org.openmrs.module.consultationworkflow.api.dao.impl;
 
-
 import org.hibernate.SessionFactory;
 import org.openmrs.module.consultationworkflow.model.WorkflowData;
 
-
 public class WorkflowDataDaoImpl extends BaseDaoImpl<WorkflowData> {
-    public WorkflowDataDaoImpl(SessionFactory sessionFactory) {
-        super(sessionFactory);
-    }
+	
+	public WorkflowDataDaoImpl(SessionFactory sessionFactory) {
+		super(sessionFactory);
+	}
 }

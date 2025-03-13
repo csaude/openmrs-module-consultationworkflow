@@ -8,19 +8,18 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BaseDao<T extends OpenmrsObject & Auditable> {
-
-
-    Optional<T> get(@NotNull int id);
-
-    Optional<T> get(@NotNull String uuid);
-
-    T createOrUpdate(T object);
-
-    void delete(T object);
-
-    void delete(@NotNull String uuid);
-
-    List<T> findAll();
-
-    List<T> findAll(boolean includeVoided);
+	
+	Optional<T> get(@NotNull int id);
+	
+	Optional<T> get(@NotNull String uuid);
+	
+	T createOrUpdate(T object);
+	
+	void delete(T object);
+	
+	void delete(@NotNull String uuid);
+	
+	List<T> findAll();
+	
+	List<T> findAll(boolean includeVoided);
 }
