@@ -15,42 +15,26 @@ import org.openmrs.api.APIException;
 import org.openmrs.api.UserService;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.consultationworkflow.api.WorkflowDataService;
-import org.openmrs.module.consultationworkflow.api.dao.impl.WorkflowDataDaoImpl;
+import org.openmrs.module.consultationworkflow.api.dao.BaseDao;
 import org.openmrs.module.consultationworkflow.model.WorkflowConfig;
 import org.openmrs.module.consultationworkflow.model.WorkflowData;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@AllArgsConstructor
 public class WorkflowDataServiceImpl extends BaseOpenmrsService implements WorkflowDataService {
 	
-	WorkflowDataDaoImpl dao;
+	private BaseDao<WorkflowConfig> workflowConfigDao;
 	
-	UserService userService;
+	private BaseDao<WorkflowData> workflowDataDao;
 	
-	/**
-	 * Injected in moduleApplicationContext.xml
-	 */
-	public void setDao(WorkflowDataDaoImpl dao) {
-		this.dao = dao;
-	}
-	
-	/**
-	 * Injected in moduleApplicationContext.xml
-	 */
-	public void setUserService(UserService userService) {
-		this.userService = userService;
-	}
+	private UserService userService;
 	
 	@Override
 	public List<WorkflowConfig> getWorkflows() {
-		WorkflowConfig workflow = new WorkflowConfig();
-		workflow.setUuid("3d121605-3f5b-49b9-9053-d06d89e92bdc");
-		workflow.setName("Dummy workflow");
-		workflow.setVersion("1.0");
-		workflow.setVoided(false);
-		workflow.setPublished(true);
-		return List.of(workflow);
+		return workflowConfigDao.findAll();
 	}
 	
 	@Override
