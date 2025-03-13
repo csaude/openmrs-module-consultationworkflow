@@ -14,54 +14,37 @@ import java.util.List;
 import org.openmrs.api.APIException;
 import org.openmrs.api.UserService;
 import org.openmrs.api.impl.BaseOpenmrsService;
-import org.openmrs.module.consultationworkflow.api.WorkflowDataService;
-import org.openmrs.module.consultationworkflow.api.dao.impl.WorkflowDataDaoImpl;
+import org.openmrs.module.consultationworkflow.api.WorkflowService;
+import org.openmrs.module.consultationworkflow.api.dao.BaseDao;
 import org.openmrs.module.consultationworkflow.model.WorkflowConfig;
 import org.openmrs.module.consultationworkflow.model.WorkflowData;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class WorkflowDataServiceImpl extends BaseOpenmrsService implements WorkflowDataService {
+@AllArgsConstructor
+public class WorkflowServiceImpl extends BaseOpenmrsService implements WorkflowService {
 	
-	WorkflowDataDaoImpl dao;
+	private BaseDao<WorkflowConfig> workflowConfigDao;
 	
-	UserService userService;
+	private BaseDao<WorkflowData> workflowDataDao;
 	
-	/**
-	 * Injected in moduleApplicationContext.xml
-	 */
-	public void setDao(WorkflowDataDaoImpl dao) {
-		this.dao = dao;
-	}
-	
-	/**
-	 * Injected in moduleApplicationContext.xml
-	 */
-	public void setUserService(UserService userService) {
-		this.userService = userService;
-	}
+	private UserService userService;
 	
 	@Override
 	public List<WorkflowConfig> getWorkflows() {
-		WorkflowConfig workflow = new WorkflowConfig();
-		workflow.setUuid("3d121605-3f5b-49b9-9053-d06d89e92bdc");
-		workflow.setName("Dummy workflow");
-		workflow.setVersion("1.0");
-		workflow.setVoided(false);
-		workflow.setPublished(true);
-		return List.of(workflow);
+		return workflowConfigDao.findAll();
 	}
 	
 	@Override
 	public WorkflowConfig saveWorkflow(WorkflowConfig workflow) {
-		log.info("Saving workflow: " + workflow);
-		return workflow;
+		return workflowConfigDao.createOrUpdate(workflow);
 	}
 	
 	@Override
 	public WorkflowConfig getWorkflowByUuid(String uuid) throws APIException {
-		throw new UnsupportedOperationException("Unimplemented method 'getWorkflowByUuid'");
+		return workflowConfigDao.get(uuid).get();
 	}
 	
 	@Override

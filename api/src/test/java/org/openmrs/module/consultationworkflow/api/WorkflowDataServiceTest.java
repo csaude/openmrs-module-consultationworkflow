@@ -24,7 +24,7 @@ import org.mockito.MockitoAnnotations;
 import org.openmrs.User;
 import org.openmrs.api.UserService;
 import org.openmrs.module.consultationworkflow.api.dao.impl.WorkflowDataDaoImpl;
-import org.openmrs.module.consultationworkflow.api.impl.WorkflowDataServiceImpl;
+import org.openmrs.module.consultationworkflow.api.impl.WorkflowServiceImpl;
 import org.openmrs.module.consultationworkflow.model.WorkflowData;
 
 /**
@@ -34,7 +34,7 @@ import org.openmrs.module.consultationworkflow.model.WorkflowData;
 public class WorkflowDataServiceTest {
 	
 	@InjectMocks
-	WorkflowDataServiceImpl basicModuleService;
+	WorkflowServiceImpl basicModuleService;
 	
 	@Mock
 	WorkflowDataDaoImpl dao;

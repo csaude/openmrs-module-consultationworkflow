@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
  * The main service of this module, which is exposed for other modules. See
  * moduleApplicationContext.xml on how it is wired up.
  */
-public interface WorkflowDataService extends OpenmrsService {
+public interface WorkflowService extends OpenmrsService {
 	
 	/**
 	 * Returns a list of workflows. It can be called by any authenticated user.

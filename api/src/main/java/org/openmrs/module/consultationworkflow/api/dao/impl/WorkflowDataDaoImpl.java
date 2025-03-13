@@ -11,7 +11,9 @@ package org.openmrs.module.consultationworkflow.api.dao.impl;
 
 import org.hibernate.SessionFactory;
 import org.openmrs.module.consultationworkflow.model.WorkflowData;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class WorkflowDataDaoImpl extends BaseDaoImpl<WorkflowData> {
 	
 	public WorkflowDataDaoImpl(SessionFactory sessionFactory) {
