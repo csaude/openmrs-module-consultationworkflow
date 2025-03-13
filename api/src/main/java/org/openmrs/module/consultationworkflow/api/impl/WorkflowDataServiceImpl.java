@@ -9,29 +9,20 @@
  */
 package org.openmrs.module.consultationworkflow.api.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.openmrs.api.APIException;
 import org.openmrs.api.UserService;
 import org.openmrs.api.impl.BaseOpenmrsService;
-<<<<<<< Updated upstream:api/src/main/java/org/openmrs/module/consultationworkflow/api/impl/ConsultationWorkflowServiceImpl.java
-import org.openmrs.module.consultationworkflow.Item;
-import org.openmrs.module.consultationworkflow.api.ConsultationWorkflowService;
-import org.openmrs.module.consultationworkflow.api.dao.ConsultationWorkflowDao;
-import org.openmrs.module.consultationworkflow.model.ConsultationWorkflowConfig;
+import org.openmrs.module.consultationworkflow.api.WorkflowDataService;
+import org.openmrs.module.consultationworkflow.api.dao.impl.WorkflowDataDaoImpl;
+import org.openmrs.module.consultationworkflow.model.WorkflowConfig;
+import org.openmrs.module.consultationworkflow.model.WorkflowData;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class ConsultationWorkflowServiceImpl extends BaseOpenmrsService implements ConsultationWorkflowService {
-=======
-import org.openmrs.module.consultationworkflow.api.WorkflowDataService;
-import org.openmrs.module.consultationworkflow.api.dao.impl.WorkflowDataDaoImpl;
-import org.openmrs.module.consultationworkflow.model.WorkflowData;
-
 public class WorkflowDataServiceImpl extends BaseOpenmrsService implements WorkflowDataService {
->>>>>>> Stashed changes:api/src/main/java/org/openmrs/module/consultationworkflow/api/impl/WorkflowDataServiceImpl.java
 	
 	WorkflowDataDaoImpl dao;
 	
@@ -52,9 +43,8 @@ public class WorkflowDataServiceImpl extends BaseOpenmrsService implements Workf
 	}
 	
 	@Override
-<<<<<<< Updated upstream:api/src/main/java/org/openmrs/module/consultationworkflow/api/impl/ConsultationWorkflowServiceImpl.java
-	public List<ConsultationWorkflowConfig> getWorkflows() {
-		ConsultationWorkflowConfig workflow = new ConsultationWorkflowConfig();
+	public List<WorkflowConfig> getWorkflows() {
+		WorkflowConfig workflow = new WorkflowConfig();
 		workflow.setUuid("3d121605-3f5b-49b9-9053-d06d89e92bdc");
 		workflow.setName("Dummy workflow");
 		workflow.setVersion("1.0");
@@ -64,23 +54,23 @@ public class WorkflowDataServiceImpl extends BaseOpenmrsService implements Workf
 	}
 	
 	@Override
-	public ConsultationWorkflowConfig saveWorkflow(ConsultationWorkflowConfig workflow) {
+	public WorkflowConfig saveWorkflow(WorkflowConfig workflow) {
 		log.info("Saving workflow: " + workflow);
 		return workflow;
-=======
-	public List<WorkflowData> getWorkflows() {
-		return new ArrayList<>();
->>>>>>> Stashed changes:api/src/main/java/org/openmrs/module/consultationworkflow/api/impl/WorkflowDataServiceImpl.java
 	}
-
+	
 	@Override
-	public WorkflowData getWorkflowByUuid(String uuid) throws APIException {
-		return null;
+	public WorkflowConfig getWorkflowByUuid(String uuid) throws APIException {
+		throw new UnsupportedOperationException("Unimplemented method 'getWorkflowByUuid'");
 	}
-
+	
 	@Override
-	public WorkflowData saveWorkflow(WorkflowData workflow) throws APIException {
-		return null;
+	public WorkflowData saveWorkflowData(WorkflowData workflow) throws APIException {
+		throw new UnsupportedOperationException("Unimplemented method 'saveWorkflowData'");
 	}
-
+	
+	@Override
+	public WorkflowData getWorkflowDataByUuid(String uuid) throws APIException {
+		throw new UnsupportedOperationException("Unimplemented method 'getWorkflowDataByUuid'");
+	}
 }

@@ -3,8 +3,8 @@ package org.openmrs.module.consultationworkflow.web.resource;
 import java.util.List;
 
 import org.openmrs.api.context.Context;
-import org.openmrs.module.consultationworkflow.api.ConsultationWorkflowService;
-import org.openmrs.module.consultationworkflow.model.ConsultationWorkflowConfig;
+import org.openmrs.module.consultationworkflow.api.WorkflowDataService;
+import org.openmrs.module.consultationworkflow.model.WorkflowConfig;
 import org.openmrs.module.consultationworkflow.web.controller.ConsultationWorkflowResourceController;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
@@ -21,36 +21,36 @@ import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOp
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
 @Resource(name = RestConstants.VERSION_1 + ConsultationWorkflowResourceController.CONSULTAION_WORKFLOW_NAMESPACE
-        + "/workflow", supportedClass = ConsultationWorkflowConfig.class, supportedOpenmrsVersions = { "2.6.* - 9.9.*" })
-public class WorkflowResource extends DelegatingCrudResource<ConsultationWorkflowConfig> {
+        + "/workflow", supportedClass = WorkflowConfig.class, supportedOpenmrsVersions = { "2.6.* - 9.9.*" })
+public class WorkflowResource extends DelegatingCrudResource<WorkflowConfig> {
 	
-	private ConsultationWorkflowService consultationWorkflowService;
+	private WorkflowDataService workflowService;
 	
 	public WorkflowResource() {
 	}
 	
-	public WorkflowResource(ConsultationWorkflowService consultationWorkflowService) {
-		this.consultationWorkflowService = consultationWorkflowService;
+	public WorkflowResource(WorkflowDataService workflowService) {
+		this.workflowService = workflowService;
 	}
 	
 	@Override
-	public ConsultationWorkflowConfig save(ConsultationWorkflowConfig delegate) {
-		return getConsultationWorkflowService().saveWorkflow(delegate);
+	public WorkflowConfig save(WorkflowConfig delegate) {
+		return getWorkflowService().saveWorkflow(delegate);
 	}
 	
 	@Override
-	public ConsultationWorkflowConfig getByUniqueId(String uniqueId) {
+	public WorkflowConfig getByUniqueId(String uniqueId) {
 		throw new UnsupportedOperationException("Unimplemented method 'getByUniqueId'");
 	}
 	
 	@Override
-	public void purge(ConsultationWorkflowConfig delegate, RequestContext context) throws ResponseException {
+	public void purge(WorkflowConfig delegate, RequestContext context) throws ResponseException {
 		throw new UnsupportedOperationException("Unimplemented method 'purge'");
 	}
 	
 	@Override
-	public ConsultationWorkflowConfig newDelegate() {
-		return new ConsultationWorkflowConfig();
+	public WorkflowConfig newDelegate() {
+		return new WorkflowConfig();
 	}
 	
 	@Override
@@ -81,20 +81,19 @@ public class WorkflowResource extends DelegatingCrudResource<ConsultationWorkflo
 	
 	@Override
 	protected PageableResult doGetAll(RequestContext context) throws ResponseException {
-		List<ConsultationWorkflowConfig> all = getConsultationWorkflowService().getWorkflows();
+		List<WorkflowConfig> all = getWorkflowService().getWorkflows();
 		return new NeedsPaging<>(all, context);
 	}
 	
 	@Override
-	protected void delete(ConsultationWorkflowConfig delegate, String reason, RequestContext context)
-	        throws ResponseException {
+	protected void delete(WorkflowConfig delegate, String reason, RequestContext context) throws ResponseException {
 		throw new UnsupportedOperationException("Unimplemented method 'delete'");
 	}
 	
-	private ConsultationWorkflowService getConsultationWorkflowService() {
-		if (consultationWorkflowService == null) {
-			consultationWorkflowService = Context.getService(ConsultationWorkflowService.class);
+	private WorkflowDataService getWorkflowService() {
+		if (workflowService == null) {
+			workflowService = Context.getService(WorkflowDataService.class);
 		}
-		return consultationWorkflowService;
+		return workflowService;
 	}
 }
