@@ -3,7 +3,7 @@ package org.openmrs.module.consultationworkflow.web.resource;
 import java.util.List;
 
 import org.openmrs.api.context.Context;
-import org.openmrs.module.consultationworkflow.api.WorkflowDataService;
+import org.openmrs.module.consultationworkflow.api.WorkflowService;
 import org.openmrs.module.consultationworkflow.model.WorkflowConfig;
 import org.openmrs.module.consultationworkflow.web.controller.ConsultationWorkflowResourceController;
 import org.openmrs.module.webservices.rest.web.RequestContext;
@@ -24,12 +24,12 @@ import org.openmrs.module.webservices.rest.web.response.ResponseException;
         + "/workflow", supportedClass = WorkflowConfig.class, supportedOpenmrsVersions = { "2.6.* - 9.9.*" })
 public class WorkflowResource extends DelegatingCrudResource<WorkflowConfig> {
 	
-	private WorkflowDataService workflowService;
+	private WorkflowService workflowService;
 	
 	public WorkflowResource() {
 	}
 	
-	public WorkflowResource(WorkflowDataService workflowService) {
+	public WorkflowResource(WorkflowService workflowService) {
 		this.workflowService = workflowService;
 	}
 	
@@ -90,9 +90,9 @@ public class WorkflowResource extends DelegatingCrudResource<WorkflowConfig> {
 		throw new UnsupportedOperationException("Unimplemented method 'delete'");
 	}
 	
-	private WorkflowDataService getWorkflowService() {
+	private WorkflowService getWorkflowService() {
 		if (workflowService == null) {
-			workflowService = Context.getService(WorkflowDataService.class);
+			workflowService = Context.getService(WorkflowService.class);
 		}
 		return workflowService;
 	}

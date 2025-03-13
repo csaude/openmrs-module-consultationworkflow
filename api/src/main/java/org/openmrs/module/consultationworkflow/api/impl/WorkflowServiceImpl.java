@@ -14,7 +14,7 @@ import java.util.List;
 import org.openmrs.api.APIException;
 import org.openmrs.api.UserService;
 import org.openmrs.api.impl.BaseOpenmrsService;
-import org.openmrs.module.consultationworkflow.api.WorkflowDataService;
+import org.openmrs.module.consultationworkflow.api.WorkflowService;
 import org.openmrs.module.consultationworkflow.api.dao.BaseDao;
 import org.openmrs.module.consultationworkflow.model.WorkflowConfig;
 import org.openmrs.module.consultationworkflow.model.WorkflowData;
@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @AllArgsConstructor
-public class WorkflowDataServiceImpl extends BaseOpenmrsService implements WorkflowDataService {
+public class WorkflowServiceImpl extends BaseOpenmrsService implements WorkflowService {
 	
 	private BaseDao<WorkflowConfig> workflowConfigDao;
 	

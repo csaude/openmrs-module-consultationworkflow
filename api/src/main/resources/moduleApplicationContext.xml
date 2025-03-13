@@ -19,15 +19,15 @@
 
     <context:component-scan base-package="org.openmrs.module.consultationworkflow" />
 
-    <!-- Wraps ConsultationWorkflowService methods in DB transactions and OpenMRS interceptors,
+    <!-- Wraps WorkflowService methods in DB transactions and OpenMRS interceptors,
     which set audit info like dateCreated, changedBy, etc.-->
-    <bean id="consultationworkflow.ConsultationWorkflowService"
+    <bean id="consultationworkflow.WorkflowService"
         class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
         <property name="transactionManager">
             <ref bean="transactionManager" />
         </property>
         <property name="target">
-            <bean class="org.openmrs.module.consultationworkflow.api.impl.WorkflowDataServiceImpl" />
+            <bean class="org.openmrs.module.consultationworkflow.api.impl.WorkflowServiceImpl" />
         </property>
         <property name="preInterceptors">
             <ref bean="serviceInterceptors" />
@@ -37,13 +37,13 @@
         </property>
     </bean>
 
-    <!-- Adds ConsultationWorkflowService to OpenMRS context so it can be accessed
-    calling Context.getService(ConsultationWorkflowService.class) -->
+    <!-- Adds WorkflowService to OpenMRS context so it can be accessed
+    calling Context.getService(WorkflowService.class) -->
     <bean parent="serviceContext">
         <property name="moduleService">
             <list>
-                <value>org.openmrs.module.consultationworkflow.api.WorkflowDataService</value>
-                <ref bean="consultationworkflow.ConsultationWorkflowService" />
+                <value>org.openmrs.module.consultationworkflow.api.WorkflowService</value>
+                <ref bean="consultationworkflow.WorkflowService" />
             </list>
         </property>
     </bean>
