@@ -32,8 +32,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Resource(name = RestConstants.VERSION_1 + ConsultationWorkflowResourceController.CONSULTAION_WORKFLOW_NAMESPACE
-        + "/workflow", supportedClass = WorkflowConfig.class, supportedOpenmrsVersions = { "2.6.* - 9.9.*" })
-public class WorkflowResource extends DelegatingCrudResource<WorkflowConfig> {
+        + "/workflowconfig", supportedClass = WorkflowConfig.class, supportedOpenmrsVersions = { "2.6.* - 9.9.*" })
+public class WorkflowConfigResource extends DelegatingCrudResource<WorkflowConfig> {
 	
 	private WorkflowService workflowService;
 	
