@@ -25,7 +25,7 @@ import lombok.Setter;
 @Table(name = "consultationworkflow_workflow_config")
 public class WorkflowConfig extends BaseChangeableOpenmrsData {
 	
-	@OneToMany(mappedBy = "workflowConfig", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "workflowConfig", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	Set<EligibilityCriteria> criteria;
 	
 	@Id
