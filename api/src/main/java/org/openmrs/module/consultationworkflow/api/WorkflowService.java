@@ -3,7 +3,7 @@
  * v. 2.0. If a copy of the MPL was not distributed with this file, You can
  * obtain one at http://mozilla.org/MPL/2.0/. OpenMRS is also distributed under
  * the terms of the Healthcare Disclaimer located at http://openmrs.org/license.
- *
+ * <p>
  * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
  * graphic logo is a trademark of OpenMRS Inc.
  */
@@ -27,7 +27,7 @@ public interface WorkflowService extends OpenmrsService {
 	/**
 	 * Returns a list of workflows. It can be called by any authenticated user.
 	 * 
-	 * @return
+	 * @return a list of WorkflowConfig objects
 	 */
 	@Authorized
 	List<WorkflowConfig> getWorkflows();
@@ -45,7 +45,7 @@ public interface WorkflowService extends OpenmrsService {
 	 * 
 	 * @param uuid the uuid of the workflow
 	 * @return a ConsultationWorkflow object
-	 * @throws APIException
+	 * @throws APIException if the workflow is not found or if there is an error in fetching it
 	 */
 	@Authorized
 	@Transactional(readOnly = true)
@@ -55,9 +55,9 @@ public interface WorkflowService extends OpenmrsService {
 	 * Saves a workflow. Sets the owner to superuser, if it is not set. It can be called by users
 	 * with this module's privilege. It is executed in a transaction.
 	 * 
-	 * @param workflow
-	 * @return
-	 * @throws APIException
+	 * @param workflow the workflowData to save
+	 * @return the saved workflowData
+	 * @throws APIException if there is an error in saving the workflowData
 	 */
 	@Transactional
 	WorkflowData saveWorkflowData(WorkflowData workflow) throws APIException;
@@ -65,4 +65,6 @@ public interface WorkflowService extends OpenmrsService {
 	@Authorized
 	@Transactional(readOnly = true)
 	WorkflowData getWorkflowDataByUuid(String uuid) throws APIException;
+	
+	List<WorkflowConfig> getPatientEligibleWorkflows(String patientUuid) throws APIException;
 }
