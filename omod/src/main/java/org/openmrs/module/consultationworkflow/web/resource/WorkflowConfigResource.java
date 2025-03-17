@@ -34,41 +34,42 @@ import lombok.NoArgsConstructor;
 @Resource(name = RestConstants.VERSION_1 + ConsultationWorkflowResourceController.CONSULTAION_WORKFLOW_NAMESPACE
         + "/workflowconfig", supportedClass = WorkflowConfig.class, supportedOpenmrsVersions = { "2.6.* - 9.9.*" })
 public class WorkflowConfigResource extends DelegatingCrudResource<WorkflowConfig> {
-	
+
 	private WorkflowService workflowService;
-	
+
 	private DatatypeService datatypeService;
-	
+
 	@Override
 	public WorkflowConfig save(WorkflowConfig delegate) {
 		return getWorkflowService().saveWorkflow(delegate);
 	}
-	
+
 	@Override
 	public Object retrieve(String uuid, RequestContext context) throws ResponseException {
-		// Note: representation description in context should always have the property "resourceValueReference"
+		// Note: representation description in context should always have the property
+		// "resourceValueReference"
 		// in order for super.retrieve to add this property in the returned object.
 		SimpleObject object = (SimpleObject) super.retrieve(uuid, context);
 		SimpleObject steps = loadStepsJson(object.get("resourceValueReference"));
 		object.put("steps", steps != null ? steps : Collections.emptyList());
 		return object;
 	}
-	
+
 	@Override
 	public WorkflowConfig getByUniqueId(String uniqueId) {
 		return getWorkflowService().getWorkflowByUuid(uniqueId);
 	}
-	
+
 	@Override
 	public void purge(WorkflowConfig delegate, RequestContext context) throws ResponseException {
 		throw new UnsupportedOperationException("Unimplemented method 'purge'");
 	}
-	
+
 	@Override
 	public WorkflowConfig newDelegate() {
 		return new WorkflowConfig();
 	}
-	
+
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
@@ -79,13 +80,17 @@ public class WorkflowConfigResource extends DelegatingCrudResource<WorkflowConfi
 		description.addProperty("version");
 		description.addProperty("resourceValueReference");
 		description.addSelfLink();
-		if (rep instanceof DefaultRepresentation || rep instanceof FullRepresentation || rep instanceof RefRepresentation) {
+		if (rep instanceof DefaultRepresentation || rep instanceof RefRepresentation) {
+			description.addProperty("criteria", Representation.REF);
+			return description;
+		} else if (rep instanceof FullRepresentation) {
+			description.addProperty("criteria", Representation.DEFAULT);
 			return description;
 		} else {
 			return null;
 		}
 	}
-	
+
 	@Override
 	public DelegatingResourceDescription getCreatableProperties() throws ResourceDoesNotSupportOperationException {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
@@ -93,31 +98,27 @@ public class WorkflowConfigResource extends DelegatingCrudResource<WorkflowConfi
 		description.addProperty("description");
 		description.addProperty("published");
 		description.addProperty("version");
+		description.addProperty("resourceValueReference");
+		description.addProperty("criteria");
 		return description;
 	}
-	
+
 	@Override
 	public DelegatingResourceDescription getUpdatableProperties() throws ResourceDoesNotSupportOperationException {
-		DelegatingResourceDescription description = new DelegatingResourceDescription();
-		description.addProperty("name");
-		description.addProperty("description");
-		description.addProperty("published");
-		description.addProperty("version");
-		description.addProperty("resourceValueReference");
-		return description;
+		return getCreatableProperties();
 	}
-	
+
 	@Override
 	protected PageableResult doGetAll(RequestContext context) throws ResponseException {
 		List<WorkflowConfig> all = getWorkflowService().getWorkflows();
 		return new NeedsPaging<>(all, context);
 	}
-	
+
 	@Override
 	protected void delete(WorkflowConfig delegate, String reason, RequestContext context) throws ResponseException {
 		throw new UnsupportedOperationException("Unimplemented method 'delete'");
 	}
-	
+
 	private SimpleObject loadStepsJson(String uuid) {
 		ClobDatatypeStorage clob = getDatatypeService().getClobDatatypeStorageByUuid(uuid);
 		if (clob == null) {
@@ -130,14 +131,14 @@ public class WorkflowConfigResource extends DelegatingCrudResource<WorkflowConfi
 			throw new APIException("Could not load steps json", e);
 		}
 	}
-	
+
 	private WorkflowService getWorkflowService() {
 		if (workflowService == null) {
 			workflowService = Context.getService(WorkflowService.class);
 		}
 		return workflowService;
 	}
-	
+
 	private DatatypeService getDatatypeService() {
 		if (datatypeService == null) {
 			datatypeService = Context.getDatatypeService();

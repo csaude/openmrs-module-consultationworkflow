@@ -9,10 +9,12 @@
  */
 package org.openmrs.module.consultationworkflow.api.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.openmrs.api.APIException;
 import org.openmrs.api.UserService;
+import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.consultationworkflow.api.WorkflowService;
 import org.openmrs.module.consultationworkflow.api.dao.BaseDao;
@@ -39,6 +41,14 @@ public class WorkflowServiceImpl extends BaseOpenmrsService implements WorkflowS
 	
 	@Override
 	public WorkflowConfig saveWorkflow(WorkflowConfig workflow) {
+		// Handle associations for all new criteria.
+		workflow.getCriteria().stream()
+				.filter(c -> c.getId() == null)
+				.forEach(c -> {
+					c.setCreator(Context.getAuthenticatedUser());
+					c.setDateCreated(new Date());
+					c.setWorkflowConfig(workflow);
+				});
 		return workflowConfigDao.createOrUpdate(workflow);
 	}
 	

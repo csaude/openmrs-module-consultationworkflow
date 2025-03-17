@@ -41,9 +41,9 @@ public class ProgramEvaluatorTest {
 	private Patient patient;
 	
 	private EligibilityCriteria criteria;
-
+	
 	private List<PatientProgram> patientPrograms;
-
+	
 	@BeforeEach
     public void setup() {
         // Initialize test patient
