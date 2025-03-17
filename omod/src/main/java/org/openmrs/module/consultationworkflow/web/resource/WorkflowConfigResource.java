@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+import org.openmrs.Patient;
 import org.openmrs.api.APIException;
 import org.openmrs.api.DatatypeService;
+import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.db.ClobDatatypeStorage;
 import org.openmrs.module.consultationworkflow.api.WorkflowService;
@@ -22,6 +24,7 @@ import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
+import org.openmrs.module.webservices.rest.web.resource.impl.EmptySearchResult;
 import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
 import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
@@ -38,6 +41,8 @@ public class WorkflowConfigResource extends DelegatingCrudResource<WorkflowConfi
 	private WorkflowService workflowService;
 	
 	private DatatypeService datatypeService;
+	
+	private PatientService patientService;
 	
 	@Override
 	public WorkflowConfig save(WorkflowConfig delegate) {
@@ -144,5 +149,29 @@ public class WorkflowConfigResource extends DelegatingCrudResource<WorkflowConfi
 			datatypeService = Context.getDatatypeService();
 		}
 		return datatypeService;
+	}
+	
+	private PatientService getPatientService() {
+		if (patientService == null) {
+			patientService = Context.getPatientService();
+		}
+		return patientService;
+	}
+	
+	@Override
+	protected PageableResult doSearch(RequestContext context) {
+		String patientUuid = context.getRequest().getParameter("patient");
+		if (patientUuid == null) {
+			return super.doSearch(context);
+		}
+
+		Patient patient = getPatientService().getPatientByUuid(patientUuid);
+		if (patient == null) {
+			return new EmptySearchResult();
+		}
+
+		List<WorkflowConfig> workflows = getWorkflowService().getPatientEligibleWorkflows(patientUuid);
+
+		return new NeedsPaging<>(workflows, context);
 	}
 }

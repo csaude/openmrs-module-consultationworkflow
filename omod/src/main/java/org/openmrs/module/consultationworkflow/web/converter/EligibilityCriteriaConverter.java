@@ -8,17 +8,17 @@ import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceD
 
 @Handler(supports = EligibilityCriteria.class)
 public class EligibilityCriteriaConverter extends BaseDelegatingConverter<EligibilityCriteria> {
-	
+
 	@Override
 	public EligibilityCriteria newInstance(String type) {
 		return new EligibilityCriteria();
 	}
-	
+
 	@Override
 	public EligibilityCriteria getByUniqueId(String string) {
 		return null;
 	}
-	
+
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
@@ -26,5 +26,5 @@ public class EligibilityCriteriaConverter extends BaseDelegatingConverter<Eligib
 		description.addProperty("condition");
 		return description;
 	}
-	
+
 }

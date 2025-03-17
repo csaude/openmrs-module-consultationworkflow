@@ -8,12 +8,15 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.stereotype.Component;
 
+import lombok.extern.log4j.Log4j;
+
 import java.util.Map;
 
 /**
  * Helper class for evaluating expressions using Spring Expression Language (SpEL)
  */
 @Component
+@Log4j
 public class ExpressionEvaluationHelper {
 	
 	private final ExpressionParser parser = new SpelExpressionParser();
@@ -41,10 +44,12 @@ public class ExpressionEvaluationHelper {
 		}
 		catch (ParseException e) {
 			// Handle parsing errors
+			log.error(e);
 			return false;
 		}
 		catch (Exception e) {
 			// Handle other evaluation errors
+			log.error(e);
 			return false;
 		}
 	}
