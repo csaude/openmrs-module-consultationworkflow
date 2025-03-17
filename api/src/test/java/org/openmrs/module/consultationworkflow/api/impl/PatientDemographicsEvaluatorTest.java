@@ -174,7 +174,7 @@ public class PatientDemographicsEvaluatorTest {
 	// should return true for correct condition
 	public void evaluate_ShouldReturnTrueForCorrectCondition() {
 		// Given
-		String condition = "age > 18";
+		String condition = "age >= 18";
 		criteria.setCondition(condition);
 
 		// Use the real expression helper to test the evaluation

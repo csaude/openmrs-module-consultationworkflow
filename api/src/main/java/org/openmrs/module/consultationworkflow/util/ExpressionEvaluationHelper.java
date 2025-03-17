@@ -61,10 +61,10 @@ public class ExpressionEvaluationHelper {
 		
 		// Handle array comparisons like: allergies == ['AL1','AL2']
 		spelExpression = spelExpression.replaceAll("(\\w+)\\s*==\\s*\\[(.*?)\\]",
-		    "#$1.containsAll(new java.util.ArrayList(T(java.util.Arrays).asList($2)))");
+				"#$1.containsAll(new java.util.ArrayList(T(java.util.Arrays).asList($2)))");
 		
 		// Replace variable references to use SpEL variable syntax
-		spelExpression = spelExpression.replaceAll("(\\b\\w+\\b)\\s*(==|!=|>|<|>=|<=)\\s*", "#$1 $2 ");
+		spelExpression = spelExpression.replaceAll("(\\b\\w+\\b)\\s*(==|!=|>=|<=|>|<)\\s*", "#$1 $2 ");
 		
 		return spelExpression;
 	}
