@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 
 import org.openmrs.Patient;
 import org.openmrs.api.APIException;
-import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.consultationworkflow.api.EligibilityCriteriaService;
@@ -35,8 +34,6 @@ public class WorkflowServiceImpl extends BaseOpenmrsService implements WorkflowS
 	private BaseDao<WorkflowConfig> workflowConfigDao;
 	
 	private BaseDao<WorkflowData> workflowDataDao;
-	
-	private UserService userService;
 	
 	private EligibilityCriteriaService eligibilityCriteriaService;
 	
@@ -64,13 +61,20 @@ public class WorkflowServiceImpl extends BaseOpenmrsService implements WorkflowS
 	}
 	
 	@Override
-	public WorkflowData saveWorkflowData(WorkflowData workflow) throws APIException {
-		throw new UnsupportedOperationException("Unimplemented method 'saveWorkflowData'");
+	public WorkflowData saveWorkflowData(WorkflowData workflowData) throws APIException {
+		workflowData.getSteps().stream()
+				.filter(s -> s.getId() == null)
+				.forEach(s -> {
+					s.setCreator(Context.getAuthenticatedUser());
+					s.setDateCreated(new Date());
+					s.setWorkflowData(workflowData);
+				});
+		return workflowDataDao.createOrUpdate(workflowData);
 	}
 	
 	@Override
 	public WorkflowData getWorkflowDataByUuid(String uuid) throws APIException {
-		throw new UnsupportedOperationException("Unimplemented method 'getWorkflowDataByUuid'");
+		return workflowDataDao.get(uuid).get();
 	}
 	
 	@Override

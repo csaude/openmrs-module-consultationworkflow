@@ -43,7 +43,7 @@ public class WorkflowData extends BaseChangeableOpenmrsData {
         if (steps == null) {
             return new HashSet<>();
         }
-        return steps.stream().filter(WorkflowStepData::isCompleted).collect(Collectors.toSet());
+        return steps.stream().filter(WorkflowStepData::getCompleted).collect(Collectors.toSet());
     }
 	
 	@Override

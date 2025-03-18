@@ -32,9 +32,10 @@ public class WorkflowStepData extends BaseChangeableOpenmrsData {
 	@Column(name = "renderType", nullable = false)
 	private String renderType;
 	
+	@Column(name = "data_reference")
 	private String dataReference;
 	
-	private boolean completed = false;
+	private Boolean completed = false;
 	
 	@Override
 	public Integer getId() {

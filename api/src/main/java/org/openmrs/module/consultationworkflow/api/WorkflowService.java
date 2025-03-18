@@ -37,7 +37,7 @@ public interface WorkflowService extends OpenmrsService {
 	 */
 	@Authorized
 	@Transactional
-	WorkflowConfig saveWorkflow(WorkflowConfig workflow);
+	WorkflowConfig saveWorkflow(WorkflowConfig workflowConfig);
 	
 	/**
 	 * Returns a workflow by its uuid. It can be called by any authenticated user. It is fetched in
@@ -55,12 +55,12 @@ public interface WorkflowService extends OpenmrsService {
 	 * Saves a workflow. Sets the owner to superuser, if it is not set. It can be called by users
 	 * with this module's privilege. It is executed in a transaction.
 	 * 
-	 * @param workflow the workflowData to save
+	 * @param workflowData the workflowData to save
 	 * @return the saved workflowData
 	 * @throws APIException if there is an error in saving the workflowData
 	 */
 	@Transactional
-	WorkflowData saveWorkflowData(WorkflowData workflow) throws APIException;
+	WorkflowData saveWorkflowData(WorkflowData workflowData) throws APIException;
 	
 	@Authorized
 	@Transactional(readOnly = true)
