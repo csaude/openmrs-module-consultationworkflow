@@ -1,10 +1,11 @@
 package org.openmrs.module.consultationworkflow.api.dao.impl;
 
-import liquibase.pro.packaged.Q;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
+import static org.hibernate.criterion.Restrictions.eq;
+
+import java.lang.reflect.ParameterizedType;
+import java.util.List;
+import java.util.Optional;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -14,11 +15,10 @@ import org.openmrs.Retireable;
 import org.openmrs.Voidable;
 import org.openmrs.module.consultationworkflow.api.dao.BaseDao;
 
-import java.lang.reflect.ParameterizedType;
-import java.util.List;
-import java.util.Optional;
-
-import static org.hibernate.criterion.Restrictions.eq;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Getter
@@ -28,11 +28,11 @@ public class BaseDaoImpl<T extends OpenmrsObject & Auditable> implements BaseDao
 	
 	private final SessionFactory sessionFactory;
 	
-	private final Class<Q> clazz;
+	private final Class<T> clazz;
 	
 	public BaseDaoImpl(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
-		this.clazz = (Class<Q>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+		this.clazz = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 	}
 	
 	protected Session getCurrentSession() {
@@ -64,9 +64,9 @@ public class BaseDaoImpl<T extends OpenmrsObject & Auditable> implements BaseDao
 	}
 	
 	@Override
-    public void delete(String uuid) {
-        this.get(uuid).ifPresent(this::delete);
-    }
+	public void delete(String uuid) {
+		this.get(uuid).ifPresent(this::delete);
+	}
 	
 	@Override
 	public List<T> findAll() {
