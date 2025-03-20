@@ -8,7 +8,7 @@ services:
             MYSQL_PASSWORD: openmrs
             MYSQL_ROOT_PASSWORD: root
     api:
-        build: .
+        image: openmrs/openmrs-core:2.7.0-amazoncorretto-11
         environment:
             OMRS_DB_HOSTNAME: db
             OMRS_DB_NAME: openmrs
@@ -16,3 +16,5 @@ services:
             OMRS_DB_PASSWORD: openmrs
             OMRS_ADMIN_USER_PASSWORD: Admin123
             OMRS_ADMIN_PASSWORD_LOCKED: true
+        volumes:
+          - ./modules:/openmrs/data/modules

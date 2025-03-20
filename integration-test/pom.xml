@@ -46,14 +46,32 @@
         <version>3.1.2</version>
         <executions>
           <execution>
-            <id>copy-dependencies</id>
+            <id>copy</id>
             <phase>process-test-resources</phase>
             <goals>
-              <goal>copy-dependencies</goal>
+              <goal>copy</goal>
             </goals>
             <configuration>
-              <includeArtifactIds>webservices.rest-omod,consultationworkflow-omod,legacyui-omod</includeArtifactIds>
-              <outputDirectory>${project.build.directory}/test-classes</outputDirectory>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.openmrs.module</groupId>
+                  <artifactId>legacyui-omod</artifactId>
+                  <outputDirectory>${project.build.directory}/test-classes/modules/</outputDirectory>
+                  <destFileName>legacyui.omod</destFileName>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.openmrs.module</groupId>
+                  <artifactId>webservices.rest-omod</artifactId>
+                  <outputDirectory>${project.build.directory}/test-classes/modules/</outputDirectory>
+                  <destFileName>webservices.rest.omod</destFileName>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.openmrs.module</groupId>
+                  <artifactId>consultationworkflow-omod</artifactId>
+                  <outputDirectory>${project.build.directory}/test-classes/modules/</outputDirectory>
+                  <destFileName>consultationworkflow.omod</destFileName>
+                </artifactItem>
+              </artifactItems>
             </configuration>
           </execution>
         </executions>

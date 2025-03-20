@@ -30,10 +30,10 @@ public class WorkflowConfigResourceIT {
 
 	private static final WaitStrategy waitStrategy = Wait.forHttp("/openmrs")
 			.forResponsePredicate(p -> p.contains("Not logged in"))
-			.withStartupTimeout(Duration.ofSeconds(90));
+			.withStartupTimeout(Duration.ofSeconds(120));
 
 	@Container
-	private static final ComposeContainer openmrs = new ComposeContainer(getComposeFile()).withBuild(true)
+	private static final ComposeContainer openmrs = new ComposeContainer(getComposeFile())
 			.withExposedService("api", OPENMRS_PORT, waitStrategy);
 
 	private static File getComposeFile() {
