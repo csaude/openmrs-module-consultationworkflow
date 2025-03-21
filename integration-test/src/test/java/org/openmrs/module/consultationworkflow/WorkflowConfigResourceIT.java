@@ -41,7 +41,8 @@ public class WorkflowConfigResourceIT {
 
 	@Container
 	private static final ComposeContainer openmrs = new ComposeContainer(getComposeFile())
-			.withExposedService("api", OPENMRS_PORT, waitStrategy);
+			.withExposedService("api", OPENMRS_PORT, waitStrategy)
+			.withLogConsumer("api", outputFrame -> System.out.print(outputFrame.getUtf8String()));
 
 	private static File getComposeFile() {
 		URL resource = WorkflowConfigResourceIT.class.getClassLoader().getResource("docker-compose.yml");
