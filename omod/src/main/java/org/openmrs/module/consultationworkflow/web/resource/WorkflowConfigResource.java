@@ -65,8 +65,8 @@ public class WorkflowConfigResource extends DelegatingCrudResource<WorkflowConfi
 		// "resourceValueReference"
 		// in order for super.retrieve to add this property in the returned object.
 		SimpleObject object = (SimpleObject) super.retrieve(uuid, context);
-		SimpleObject steps = loadStepsJson(object.get("resourceValueReference"));
-		object.put("steps", steps != null ? steps : Collections.emptyList());
+		SimpleObject stepsObject = loadStepsJson(object.get("resourceValueReference"));
+		object.put("steps", stepsObject != null ? stepsObject.get("steps") : Collections.emptyList());
 		return object;
 	}
 
