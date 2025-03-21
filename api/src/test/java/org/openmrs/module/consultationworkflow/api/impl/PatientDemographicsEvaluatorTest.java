@@ -153,36 +153,36 @@ public class PatientDemographicsEvaluatorTest {
 		// Then
 		assertTrue(result);
 	}
-
+	
 	@Test
 	public void evaluate_ShouldReturnFalseForInvalidCondition() {
-	    // Given
-	    String condition = "age > 30";
-	    criteria.setCondition(condition);
-
-	    // Use the real expression helper to test the evaluation
-	    evaluator = new PatientDemographicsEvaluator(new ExpressionEvaluationHelper());
-
-	    // When
-	    boolean result = evaluator.evaluate(patient, criteria);
-
-	    // Then
-	    assertFalse(result);
+		// Given
+		String condition = "age > 30";
+		criteria.setCondition(condition);
+		
+		// Use the real expression helper to test the evaluation
+		evaluator = new PatientDemographicsEvaluator(new ExpressionEvaluationHelper());
+		
+		// When
+		boolean result = evaluator.evaluate(patient, criteria);
+		
+		// Then
+		assertFalse(result);
 	}
-
+	
 	@Test
 	// should return true for correct condition
 	public void evaluate_ShouldReturnTrueForCorrectCondition() {
 		// Given
 		String condition = "age >= 18";
 		criteria.setCondition(condition);
-
+		
 		// Use the real expression helper to test the evaluation
 		evaluator = new PatientDemographicsEvaluator(new ExpressionEvaluationHelper());
-
+		
 		// When
 		boolean result = evaluator.evaluate(patient, criteria);
-
+		
 		// Then
 		assertTrue(result);
 	}
