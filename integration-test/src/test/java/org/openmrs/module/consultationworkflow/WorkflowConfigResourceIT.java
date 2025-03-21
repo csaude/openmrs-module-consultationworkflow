@@ -1,6 +1,5 @@
 package org.openmrs.module.consultationworkflow;
 
-import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonNodePresent;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonPartEquals;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -96,19 +95,7 @@ public class WorkflowConfigResourceIT {
 
 		// Step 2: Create a workflowconfig using the uploaded steps UUID
 		String url = "http://{host}:{port}/openmrs/ws/rest/v1/consultationworkflow/workflowconfig";
-		String requestBody = "{"
-				+ "\"name\": \"Test Workflow\","
-				+ "\"description\": \"Test Description\","
-				+ "\"published\": true,"
-				+ "\"version\": \"1.0\","
-				+ "\"resourceValueReference\": \"" + clobUuid + "\","
-				+ "\"criteria\": ["
-				+ "    {"
-				+ "        \"condition\": \"age > 13\","
-				+ "        \"criteriaType\": \"PATIENT_DEMOGRAPHICS\""
-				+ "    }"
-				+ "]"
-				+ "}";
+		String requestBody = getWorkflowConfigJson(clobUuid);
 		RequestEntity<String> createRequest = RequestEntity.post(url, host, port).headers(getHttpHeaders())
 				.body(requestBody);
 		ResponseEntity<String> createResp = restTemplate.exchange(createRequest, String.class);
@@ -129,19 +116,7 @@ public class WorkflowConfigResourceIT {
 	public void getByUuidShouldReturnResource() {
 		// Create a resource first
 		String createUrl = "http://{host}:{port}/openmrs/ws/rest/v1/consultationworkflow/workflowconfig";
-		String createRequestBody = "{"
-				+ "\"name\": \"Test Workflow get by uuid\","
-				+ "\"description\": \"Test Description\","
-				+ "\"published\": true,"
-				+ "\"version\": \"1.0\","
-				+ "\"resourceValueReference\": \"some-uuid\","
-				+ "\"criteria\": ["
-				+ "    {"
-				+ "        \"condition\": \"age > 13\","
-				+ "        \"criteriaType\": \"PATIENT_DEMOGRAPHICS\""
-				+ "    }"
-				+ "]"
-				+ "}";
+		String createRequestBody = getWorkflowConfigJson(null);
 		RequestEntity<String> createRequest = RequestEntity.post(createUrl, host, port).headers(getHttpHeaders())
 				.body(createRequestBody);
 		ResponseEntity<String> createResp = restTemplate.exchange(createRequest, String.class);
@@ -162,19 +137,7 @@ public class WorkflowConfigResourceIT {
 	public void postByUuidShouldEditResource() {
 		// Create a resource first
 		String createUrl = "http://{host}:{port}/openmrs/ws/rest/v1/consultationworkflow/workflowconfig";
-		String createRequestBody = "{"
-				+ "\"name\": \"Test Workflow\","
-				+ "\"description\": \"Test Description\","
-				+ "\"published\": true,"
-				+ "\"version\": \"1.0\","
-				+ "\"resourceValueReference\": \"some-uuid\","
-				+ "\"criteria\": ["
-				+ "    {"
-				+ "        \"condition\": \"age > 13\","
-				+ "        \"criteriaType\": \"PATIENT_DEMOGRAPHICS\""
-				+ "    }"
-				+ "]"
-				+ "}";
+		String createRequestBody = getWorkflowConfigJson(null);
 		RequestEntity<String> createRequest = RequestEntity.post(createUrl, host, port).headers(getHttpHeaders())
 				.body(createRequestBody);
 		ResponseEntity<String> createResp = restTemplate.exchange(createRequest, String.class);
@@ -208,19 +171,7 @@ public class WorkflowConfigResourceIT {
 	public void deleteByUuidShouldRemoveResource() {
 		// Create a resource first
 		String createUrl = "http://{host}:{port}/openmrs/ws/rest/v1/consultationworkflow/workflowconfig";
-		String createRequestBody = "{"
-				+ "\"name\": \"Test Workflow\","
-				+ "\"description\": \"Test Description\","
-				+ "\"published\": true,"
-				+ "\"version\": \"1.0\","
-				+ "\"resourceValueReference\": \"some-uuid\","
-				+ "\"criteria\": ["
-				+ "    {"
-				+ "        \"condition\": \"age > 13\","
-				+ "        \"criteriaType\": \"PATIENT_DEMOGRAPHICS\""
-				+ "    }"
-				+ "]"
-				+ "}";
+		String createRequestBody = getWorkflowConfigJson(null);
 		RequestEntity<String> createRequest = RequestEntity.post(createUrl, host, port).headers(getHttpHeaders())
 				.body(createRequestBody);
 		ResponseEntity<String> createResp = restTemplate.exchange(createRequest, String.class);
@@ -241,6 +192,23 @@ public class WorkflowConfigResourceIT {
 		RequestEntity<Void> getRequest = RequestEntity.get(getUrl, host, port, uuid).headers(getHttpHeaders()).build();
 		ResponseEntity<String> getResp = restTemplate.exchange(getRequest, String.class);
 		assertThat(getResp.getStatusCode(), is(HttpStatus.NOT_FOUND));
+	}
+
+	private String getWorkflowConfigJson(String resourceValueReference) {
+		return "{"
+				+ "\"name\": \"Test Workflow\","
+				+ "\"description\": \"Test Description\","
+				+ "\"published\": true,"
+				+ "\"version\": \"1.0\","
+				+ "\"resourceValueReference\":"
+				+ (resourceValueReference != null ? "\"" + resourceValueReference + "\"" : "null") + ","
+				+ "\"criteria\": ["
+				+ "    {"
+				+ "        \"condition\": \"age > 13\","
+				+ "        \"criteriaType\": \"PATIENT_DEMOGRAPHICS\""
+				+ "    }"
+				+ "]"
+				+ "}";
 	}
 
 	private HttpHeaders getHttpHeaders() {
