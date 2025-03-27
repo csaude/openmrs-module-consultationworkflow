@@ -27,6 +27,7 @@
 	<modules>
 		<module>api</module>
 		<module>omod</module>
+		<module>integration-test</module>
 	</modules>
 
 	<distributionManagement>
@@ -70,8 +71,9 @@
 		<javaCompilerSource>11</javaCompilerSource>
 		<javaCompilerTarget>11</javaCompilerTarget>
 		<javaCompilerVersion>11</javaCompilerVersion>
-		<openmrsPlatformVersion>2.6.7</openmrsPlatformVersion>
+		<openmrsPlatformVersion>2.7.0</openmrsPlatformVersion>
 		<lombokVersion>1.18.20</lombokVersion>
+		<webServices.restVersion>2.48.0</webServices.restVersion>
 	</properties>
 
 	<dependencyManagement>
@@ -79,13 +81,13 @@
 			<dependency>
 				<groupId>org.openmrs.module</groupId>
 				<artifactId>webservices.rest-omod</artifactId>
-				<version>2.41.0</version>
+				<version>${webServices.restVersion}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.openmrs.module</groupId>
 				<artifactId>webservices.rest-omod-common</artifactId>
-				<version>2.41.0</version>
+				<version>${webServices.restVersion}</version>
 				<classifier>tests</classifier>
 				<scope>test</scope>
 			</dependency>
@@ -130,6 +132,29 @@
 				<artifactId>hamcrest</artifactId>
 				<version>2.2</version>
 				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.testcontainers</groupId>
+				<artifactId>testcontainers</artifactId>
+				<scope>test</scope>
+				<version>1.20.6</version>
+			</dependency>
+			<dependency>
+				<groupId>org.testcontainers</groupId>
+				<artifactId>junit-jupiter</artifactId>
+				<scope>test</scope>
+				<version>1.20.6</version>
+			</dependency>
+			<dependency>
+				<groupId>net.javacrumbs.json-unit</groupId>
+				<artifactId>json-unit</artifactId>
+				<version>2.40.1</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.jayway.jsonpath</groupId>
+				<artifactId>json-path</artifactId>
+				<version>2.9.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.projectlombok</groupId>

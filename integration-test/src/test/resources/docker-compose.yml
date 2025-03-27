@@ -1,0 +1,20 @@
+services:
+    db:
+        image: mariadb:10.3
+        command: "mysqld --character-set-server=utf8 --collation-server=utf8_general_ci"
+        environment:
+            MYSQL_DATABASE: openmrs
+            MYSQL_USER: openmrs
+            MYSQL_PASSWORD: openmrs
+            MYSQL_ROOT_PASSWORD: root
+    api:
+        image: openmrs/openmrs-core:2.7.0-amazoncorretto-11
+        environment:
+            OMRS_DB_HOSTNAME: db
+            OMRS_DB_NAME: openmrs
+            OMRS_DB_USERNAME: openmrs
+            OMRS_DB_PASSWORD: openmrs
+            OMRS_ADMIN_USER_PASSWORD: Admin123
+            OMRS_ADMIN_PASSWORD_LOCKED: true
+        volumes:
+          - ./modules:/openmrs/data/modules
