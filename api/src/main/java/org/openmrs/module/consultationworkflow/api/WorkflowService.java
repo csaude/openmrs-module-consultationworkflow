@@ -11,6 +11,7 @@ package org.openmrs.module.consultationworkflow.api;
 
 import java.util.List;
 
+import org.openmrs.Patient;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
 import org.openmrs.api.OpenmrsService;
@@ -65,6 +66,8 @@ public interface WorkflowService extends OpenmrsService {
 	@Authorized
 	@Transactional(readOnly = true)
 	WorkflowData getWorkflowDataByUuid(String uuid) throws APIException;
+	
+	List<WorkflowData> getWorkflowDataByPatient(Patient patient) throws APIException;
 	
 	List<WorkflowConfig> getPatientEligibleWorkflows(String patientUuid) throws APIException;
 }
