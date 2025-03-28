@@ -9,11 +9,8 @@
  */
 package org.openmrs.module.consultationworkflow.api.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.openmrs.Patient;
 import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
@@ -21,11 +18,15 @@ import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.consultationworkflow.api.EligibilityCriteriaService;
 import org.openmrs.module.consultationworkflow.api.WorkflowService;
 import org.openmrs.module.consultationworkflow.api.dao.BaseDao;
+import org.openmrs.module.consultationworkflow.api.dao.WorkflowDataDao;
+import org.openmrs.module.consultationworkflow.api.dao.search.WorkflowDataSearchCriteria;
 import org.openmrs.module.consultationworkflow.model.WorkflowConfig;
 import org.openmrs.module.consultationworkflow.model.WorkflowData;
 
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @AllArgsConstructor
@@ -33,7 +34,7 @@ public class WorkflowServiceImpl extends BaseOpenmrsService implements WorkflowS
 	
 	private BaseDao<WorkflowConfig> workflowConfigDao;
 	
-	private BaseDao<WorkflowData> workflowDataDao;
+	private WorkflowDataDao workflowDataDao;
 	
 	private EligibilityCriteriaService eligibilityCriteriaService;
 	
@@ -43,17 +44,17 @@ public class WorkflowServiceImpl extends BaseOpenmrsService implements WorkflowS
 	}
 	
 	@Override
-	public WorkflowConfig saveWorkflow(WorkflowConfig workflow) {
-		// Handle associations for all new criteria.
-		workflow.getCriteria().stream()
-				.filter(c -> c.getId() == null)
-				.forEach(c -> {
-					c.setCreator(Context.getAuthenticatedUser());
-					c.setDateCreated(new Date());
-					c.setWorkflowConfig(workflow);
-				});
-		return workflowConfigDao.createOrUpdate(workflow);
-	}
+    public WorkflowConfig saveWorkflow(WorkflowConfig workflow) {
+        // Handle associations for all new criteria.
+        workflow.getCriteria().stream()
+                .filter(c -> c.getId() == null)
+                .forEach(c -> {
+                    c.setCreator(Context.getAuthenticatedUser());
+                    c.setDateCreated(new Date());
+                    c.setWorkflowConfig(workflow);
+                });
+        return workflowConfigDao.createOrUpdate(workflow);
+    }
 	
 	@Override
 	public WorkflowConfig getWorkflowByUuid(String uuid) throws APIException {
@@ -61,16 +62,16 @@ public class WorkflowServiceImpl extends BaseOpenmrsService implements WorkflowS
 	}
 	
 	@Override
-	public WorkflowData saveWorkflowData(WorkflowData workflowData) throws APIException {
-		workflowData.getSteps().stream()
-				.filter(s -> s.getId() == null)
-				.forEach(s -> {
-					s.setCreator(Context.getAuthenticatedUser());
-					s.setDateCreated(new Date());
-					s.setWorkflowData(workflowData);
-				});
-		return workflowDataDao.createOrUpdate(workflowData);
-	}
+    public WorkflowData saveWorkflowData(WorkflowData workflowData) throws APIException {
+        workflowData.getSteps().stream()
+                .filter(s -> s.getId() == null)
+                .forEach(s -> {
+                    s.setCreator(Context.getAuthenticatedUser());
+                    s.setDateCreated(new Date());
+                    s.setWorkflowData(workflowData);
+                });
+        return workflowDataDao.createOrUpdate(workflowData);
+    }
 	
 	@Override
 	public WorkflowData getWorkflowDataByUuid(String uuid) throws APIException {
@@ -78,23 +79,30 @@ public class WorkflowServiceImpl extends BaseOpenmrsService implements WorkflowS
 	}
 	
 	@Override
-	public List<WorkflowConfig> getPatientEligibleWorkflows(String patientUuid) throws APIException {
-
-		List<WorkflowConfig> allWorkflows = getWorkflows();
-		if (allWorkflows.isEmpty()) {
-			return allWorkflows;
-		}
-
-		return allWorkflows.stream()
-				.filter(WorkflowConfig::getPublished)
-				.filter(workflow -> {
-					Patient patient = Context.getPatientService().getPatientByUuid(patientUuid);
-					if (patient == null) {
-						throw new APIException("Patient not found with UUID: " + patientUuid);
-					}
-					return eligibilityCriteriaService
-							.isPatientEligible(patient, new ArrayList<>(workflow.getCriteria()));
-				})
-				.collect(Collectors.toList());
+	public List<WorkflowData> getWorkflowDataByPatient(Patient patient) throws APIException {
+		WorkflowDataSearchCriteria criteria = new WorkflowDataSearchCriteria();
+		criteria.setPatient(patient);
+		return workflowDataDao.getWorkflowDataByCriteria(criteria);
 	}
+	
+	@Override
+    public List<WorkflowConfig> getPatientEligibleWorkflows(String patientUuid) throws APIException {
+
+        List<WorkflowConfig> allWorkflows = getWorkflows();
+        if (allWorkflows.isEmpty()) {
+            return allWorkflows;
+        }
+
+        return allWorkflows.stream()
+                .filter(WorkflowConfig::getPublished)
+                .filter(workflow -> {
+                    Patient patient = Context.getPatientService().getPatientByUuid(patientUuid);
+                    if (patient == null) {
+                        throw new APIException("Patient not found with UUID: " + patientUuid);
+                    }
+                    return eligibilityCriteriaService
+                            .isPatientEligible(patient, new ArrayList<>(workflow.getCriteria()));
+                })
+                .collect(Collectors.toList());
+    }
 }

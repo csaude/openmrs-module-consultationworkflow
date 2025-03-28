@@ -1,7 +1,12 @@
 package org.openmrs.module.consultationworkflow.web.resource;
 
-import java.util.Map;
-
+import io.swagger.models.Model;
+import io.swagger.models.ModelImpl;
+import io.swagger.models.properties.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.openmrs.Patient;
+import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.consultationworkflow.api.WorkflowService;
 import org.openmrs.module.consultationworkflow.model.WorkflowData;
@@ -13,20 +18,16 @@ import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentat
 import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.RefRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
+import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
+import org.openmrs.module.webservices.rest.web.resource.impl.EmptySearchResult;
+import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
 import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
-import io.swagger.models.Model;
-import io.swagger.models.ModelImpl;
-import io.swagger.models.properties.ArrayProperty;
-import io.swagger.models.properties.BooleanProperty;
-import io.swagger.models.properties.ObjectProperty;
-import io.swagger.models.properties.StringProperty;
-import io.swagger.models.properties.UUIDProperty;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import java.util.List;
+import java.util.Map;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -35,6 +36,8 @@ import lombok.NoArgsConstructor;
 public class WorkflowDataResource extends DelegatingCrudResource<WorkflowData> {
 	
 	private WorkflowService workflowService;
+	
+	private PatientService patientService;
 	
 	@Override
 	public WorkflowData newDelegate() {
@@ -113,10 +116,35 @@ public class WorkflowDataResource extends DelegatingCrudResource<WorkflowData> {
 		throw new UnsupportedOperationException("Unimplemented method 'delete'");
 	}
 	
+	@Override
+    protected PageableResult doSearch(RequestContext context) {
+        String patientUuid = context.getRequest().getParameter("patient");
+        if (patientUuid == null) {
+            return super.doSearch(context);
+        }
+
+        Patient patient = getPatientService().getPatientByUuid(patientUuid);
+        if (patient == null) {
+            return new EmptySearchResult();
+        }
+
+        List<WorkflowData> workflowDataList = getWorkflowService().getWorkflowDataByPatient(patient);
+
+        return new NeedsPaging<>(workflowDataList, context);
+    }
+	
 	private WorkflowService getWorkflowService() {
 		if (workflowService == null) {
 			workflowService = Context.getService(WorkflowService.class);
 		}
 		return workflowService;
 	}
+	
+	private PatientService getPatientService() {
+		if (patientService == null) {
+			patientService = Context.getPatientService();
+		}
+		return patientService;
+	}
+	
 }
