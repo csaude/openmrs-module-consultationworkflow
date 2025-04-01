@@ -12,4 +12,11 @@
 	<packaging>jar</packaging>
 	<name>Consultation Workflow API</name>
 	<description>API project for Consultation Workflow</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-text</artifactId>
+		</dependency>
+	</dependencies>
 </project>

@@ -111,6 +111,7 @@ public class WorkflowConfigResourceIT {
 		ResponseEntity<String> getResp = restTemplate.exchange(getRequest, String.class);
 		assertThat(getResp.getBody(), jsonPartEquals("steps",
 				"[{\"uuid\":\"some-uuid\",\"type\":\"form\",\"formUuid\":\"some-form-uuid\"}]"));
+		assertThat(getResp.getBody(), jsonPartEquals("criteria[0].condition", "age > 13"));
 	}
 
 	@Test
