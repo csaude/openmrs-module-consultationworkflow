@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.openmrs.BaseChangeableOpenmrsData;
 
 import lombok.Getter;
@@ -51,4 +52,7 @@ public class EligibilityCriteria extends BaseChangeableOpenmrsData {
 		setEligibilityCriteriaId(id);
 	}
 	
+	public String getCondition() {
+		return StringEscapeUtils.unescapeHtml4(condition);
+	}
 }
