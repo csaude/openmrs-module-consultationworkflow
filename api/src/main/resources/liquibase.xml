@@ -179,4 +179,15 @@
                                  referencedTableName="consultationworkflow_workflow_config"
                                  referencedColumnNames="workflow_config_id"/>
     </changeSet>
+
+    <changeSet id="20250423-add-sync-patient-column" author="yassin">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="consultationworkflow_workflow_config" columnName="sync_patient"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="consultationworkflow_workflow_config">
+            <column name="sync_patient" type="boolean" defaultValueBoolean="false"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

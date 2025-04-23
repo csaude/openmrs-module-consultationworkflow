@@ -96,6 +96,7 @@ public class WorkflowConfigResource extends DelegatingCrudResource<WorkflowConfi
 			description.addProperty("description");
 			description.addProperty("published");
 			description.addProperty("version");
+			description.addProperty("syncPatient");
 			description.addProperty("resourceValueReference");
 		} else if (rep instanceof RefRepresentation) {
 			description.addProperty("uuid");
@@ -106,6 +107,7 @@ public class WorkflowConfigResource extends DelegatingCrudResource<WorkflowConfi
 			description.addProperty("description");
 			description.addProperty("published");
 			description.addProperty("version");
+			description.addProperty("syncPatient");
 			description.addProperty("resourceValueReference");
 			description.addProperty("criteria", Representation.DEFAULT);
 		} else {
@@ -124,6 +126,7 @@ public class WorkflowConfigResource extends DelegatingCrudResource<WorkflowConfi
 		description.addProperty("version");
 		description.addProperty("resourceValueReference");
 		description.addProperty("criteria");
+		description.addProperty("syncPatient");
 		return description;
 	}
 	

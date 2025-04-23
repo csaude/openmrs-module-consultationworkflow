@@ -47,6 +47,9 @@ public class WorkflowConfig extends BaseChangeableOpenmrsData {
 	@Column
 	private String resourceValueReference;
 	
+	@Column(name = "sync_patient")
+	private Boolean syncPatient;
+	
 	@Override
 	public Integer getId() {
 		return getWorkflowConfigId();
